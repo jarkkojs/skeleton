@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+# Copyright (c) 2022 Jarkko Sakkinen <jarkko.sakkinen@iki.fi>
+
+import re
+import sys
+from git.repo import Repo
+
+TOPICS = "build|feat|fix|refactor|test"
+
+if __name__ == "__main__":
+    repo = Repo('.')
+
+    remote = repo.remote()
+    remote.fetch()
+
+    for remote in repo.remotes:
+        print(remote.name)
+        remote.fetch()
+
+    topics_h= list(
+        filter(lambda h: re.search("^(%s)/" % (TOPICS), h.name),
+               repo.heads))
+
+    for topic in topics_h:
+        print(topic.name)
+        repo.delete_head(topic, '-D')
+
+    topics_r = list(
+        filter(
+            lambda r: re.search("^origin/(%s)/" % (TOPICS), r.name),
+            repo.remote().refs))
+
+    for topic in topics_r:
+        repo.git.checkout(topic.name.split('/', 1)[1])

@@ -1,0 +1,20 @@
+[color]
+    diff = auto
+    interactive = auto
+    status = auto
+    ui = auto
+
+[core]
+    editor = nvim
+
+[include]
+    path = ~/.gitconfig.local
+
+[merge]
+    conflictstyle = diff3
+
+[pager]
+    stash = false
+
+[sendemail]
+    smtpserver = /usr/bin/msmtp

@@ -1,0 +1,36 @@
+set sort_aux=last-date-received
+set sort_re
+set editor='nvim -c "set tw=75" -c "set et" -c "set filetype=mail"'
+set edit_headers=yes
+set sleep_time = 0
+set mail_check = 60
+set timeout = 10
+set mail_check_stats
+unset signature
+auto_view text/html
+
+set header_cache = ~/.cache/mutt/headers
+set message_cachedir = ~/.cache/mutt/messages
+
+# Alias
+set alias_file = "~/.mutt/aliases"
+set sort_alias = alias
+set reverse_alias = yes
+source $alias_file
+
+# 'S' sort threads/dates
+source ~/.mutt/sort-threads.rc
+
+macro index - <collapse-thread> "collapse-thread"
+macro index _ <collapse-thread> "collapse-all"
+
+macro index <F10> "<pipe-message>~/bin/open-html-mail\n" "View HTML message in a web browser"
+macro pager <F10> "<pipe-message>~/bin/open-html-mail\n" "View HTML message in a web browser"
+
+macro index,pager \cb "<pipe-message> urlscan<Enter>" "Extract URLs out of a message"
+macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "Extract URLs out of a message"
+
+bind pager <up> previous-line
+bind pager <down> next-line
+
+source "~/.mutt/muttrc.local"

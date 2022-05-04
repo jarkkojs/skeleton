@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#
+# Copyright (c) 2022 Jarkko Sakkinen <jarkko.sakkinen@iki.fi>
+
+cat /proc/kallsyms | \
+   sed -n '/call_meta__/p' | \
+   sed 's/.*call_meta__\(.*\)/\1/g; s/\(.*\)/s\/syscall SYS_\1\/syscall \1\//; 1i #include <sys/syscall.h>' | \
+   gcc -E -P - | \
+   grep -v 'SYS_' | \
+   sort -n | \
+   uniq | \
+   xargs -I{} sed -i '{}' "$1"
+
+perl -p -e 's/\b\d{4,}\b/sprintf "%#x", $&/ge' -i "$1"

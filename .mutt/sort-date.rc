@@ -1,0 +1,4 @@
+set sort = 'date'
+set sort_aux = 'last-date-received'
+
+macro index S "<enter-command>source ~/.mutt/sort-threads.rc<enter>"
